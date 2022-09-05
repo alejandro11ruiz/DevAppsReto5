@@ -17,7 +17,8 @@ public class TicTacToeGame {
     public static final char HUMAN_PLAYER = 'X';
     public static final char COMPUTER_PLAYER = 'O';
     public static final char OPEN_SPOT = ' ';
-    private char mBoard[] = {' ',' ',' ',' ',' ',' ',' ',' ',' '};
+    public static final char OPEN_SPOT_NE = '.';
+    public char mBoard[] = {OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT};
     public char turn;
 
     private Random mRand; //dime si alguien tiene dudas de que por aca nos pasamos el juego nanana
@@ -168,9 +169,12 @@ public class TicTacToeGame {
      * @param player - The HUMAN_PLAYER or COMPUTER_PLAYER
      * @param location - The location (0-8) to place the move
      */
-    public void setMove(char player, int location){
-        if(mBoard[location]==OPEN_SPOT) mBoard[location]=player;
-        else return;
+    public boolean setMove(char player, int location){
+        if(mBoard[location]==OPEN_SPOT) {
+            mBoard[location]=player;
+            return true;
+        }
+        else return false;
     }
 
     public DifficultyLevel getDifficultyLevel() {
