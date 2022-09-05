@@ -3,6 +3,7 @@ package com.example.tictactoe_reto5;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,14 +26,14 @@ public class MainActivity extends AppCompatActivity {
     static final int DIALOG_STARTER = 2;
     // Represents the internal state of the game
     private TicTacToeGame mGame;
-    // Buttons making up the board
-    private Button mBoardButtons[];
     // Various text displayed
     private TextView mInfoTextView;
     private TextView mInfoHW;
     private TextView mInfoT;
     private TextView mInfoAW;
     private BoardView mBoardView;
+    MediaPlayer mHumanMediaPlayer;
+    MediaPlayer mComputerMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +124,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     private boolean setMove(char player, int location) {
+
         if (mGame.setMove(player, location)) {
+            if(player==TicTacToeGame.HUMAN_PLAYER){
+                mHumanMediaPlayer.start(); // Play the sound effect
+            }
             mBoardView.invalidate(); // Redraw the board
             return true;
         }
@@ -214,9 +219,18 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return dialog;
-
-
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mHumanMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.humanmove);
+        mComputerMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.androidmove);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mHumanMediaPlayer.release();
+        mComputerMediaPlayer.release();
+    }
 }
