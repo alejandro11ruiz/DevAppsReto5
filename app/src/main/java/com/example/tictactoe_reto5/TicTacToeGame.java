@@ -4,7 +4,7 @@ import java.util.Random;
 public class TicTacToeGame {
 
     // The computer's difficulty levels
-    public enum DifficultyLevel {Easy, Harder, Expert};
+    public enum DifficultyLevel {Easy, Harder, Expert}
     // Current difficulty level
     public DifficultyLevel mDifficultyLevel = DifficultyLevel.Expert;
 
@@ -185,5 +185,9 @@ public class TicTacToeGame {
         else if(playerWin==2) humanWins++;
         else if(playerWin==3) androidWins++;
         else return;
+    }
+
+    public char getBoardOccupant(int i){
+        return mBoard[i];
     }
 }

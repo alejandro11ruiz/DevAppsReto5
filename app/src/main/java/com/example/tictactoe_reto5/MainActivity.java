@@ -22,6 +22,15 @@ public class MainActivity extends AppCompatActivity {
     static final int DIALOG_DIFFICULTY_ID = 0;
     static final int DIALOG_QUIT_ID = 1;
     static final int DIALOG_STARTER = 2;
+    // Represents the internal state of the game
+    private TicTacToeGame mGame;
+    // Buttons making up the board
+    private Button mBoardButtons[];
+    // Various text displayed
+    private TextView mInfoTextView;
+    private TextView mInfoHW;
+    private TextView mInfoT;
+    private TextView mInfoAW;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,18 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         startNewGame();
     }
-
-    // Represents the internal state of the game
-    private TicTacToeGame mGame;
-
-    // Buttons making up the board
-    private Button mBoardButtons[];
-
-    // Various text displayed
-    private TextView mInfoTextView;
-    private TextView mInfoHW;
-    private TextView mInfoT;
-    private TextView mInfoAW;
 
 
     // Set up the game board.
