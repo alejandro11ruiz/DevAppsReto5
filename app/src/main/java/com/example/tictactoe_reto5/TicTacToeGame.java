@@ -20,6 +20,7 @@ public class TicTacToeGame {
     public static final char OPEN_SPOT_NE = '.';
     public char mBoard[] = {OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT,OPEN_SPOT};
     public char turn;
+    public char startTurn;
 
     private Random mRand; //dime si alguien tiene dudas de que por aca nos pasamos el juego nanana
 
@@ -28,7 +29,8 @@ public class TicTacToeGame {
         // Seed the random number generator
         mRand = new Random();
 
-        turn = HUMAN_PLAYER;    // Human starts first
+        startTurn = HUMAN_PLAYER; // Human starts first
+        turn = HUMAN_PLAYER;
 
         win = 0;                // Set to 1, 2, or 3 when game is over
         humanWins= 0;

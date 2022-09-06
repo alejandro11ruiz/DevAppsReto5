@@ -1,10 +1,15 @@
 package com.example.tictactoe_reto5;
 
+import static androidx.core.content.PackageManagerCompat.LOG_TAG;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer mHumanMediaPlayer;
     MediaPlayer mComputerMediaPlayer;
 
+    Handler handler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,17 +63,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
     // Set up the game board.
     private void startNewGame() {
         mGame.clearBoard();
         mBoardView.invalidate(); // Redraw the board
         // Who goes first
-        if(mGame.turn==TicTacToeGame.HUMAN_PLAYER) mInfoTextView.setText(R.string.first_human);
-        else if(mGame.turn==TicTacToeGame.COMPUTER_PLAYER){
+        if(mGame.startTurn==TicTacToeGame.HUMAN_PLAYER) {
+            mInfoTextView.setText(R.string.first_human);
+        }
+        else if(mGame.startTurn==TicTacToeGame.COMPUTER_PLAYER){
+            mInfoTextView.setText(R.string.first_android);
             int move = mGame.getComputerMove();
             setMove(TicTacToeGame.COMPUTER_PLAYER, move);
             mInfoTextView.setText(R.string.turn_human);
+            mGame.turn=TicTacToeGame.HUMAN_PLAYER;
         }
+
     } // End of startNewGame
 
 
@@ -75,9 +89,13 @@ public class MainActivity extends AppCompatActivity {
             if (mGame.mBoard[i] == TicTacToeGame.OPEN_SPOT)
                 mGame.mBoard[i] = TicTacToeGame.OPEN_SPOT_NE;
             }
-            if (mGame.turn == TicTacToeGame.HUMAN_PLAYER)
+            if (mGame.startTurn == TicTacToeGame.HUMAN_PLAYER) {
+                mGame.startTurn = TicTacToeGame.COMPUTER_PLAYER;
                 mGame.turn = TicTacToeGame.COMPUTER_PLAYER;
-            else mGame.turn = TicTacToeGame.HUMAN_PLAYER;
+            }else{
+                mGame.startTurn = TicTacToeGame.HUMAN_PLAYER;
+                mGame.turn = TicTacToeGame.HUMAN_PLAYER;;
+            }
     }
 
 
@@ -90,20 +108,23 @@ public class MainActivity extends AppCompatActivity {
             int row = (int) event.getY() / mBoardView.getBoardCellHeight();
             int pos = row * 3 + col;
 
-            if (mGame.mBoard[pos]==TicTacToeGame.OPEN_SPOT) {
+            if (mGame.mBoard[pos]==TicTacToeGame.OPEN_SPOT && mGame.turn==TicTacToeGame.HUMAN_PLAYER) {
                 setMove(TicTacToeGame.HUMAN_PLAYER, pos);
                 // If no winner yet, let the computer make a move
                 int winner = mGame.checkForWinner();
                 if (winner == 0) {
+                    mGame.turn=TicTacToeGame.COMPUTER_PLAYER;
                     mInfoTextView.setText(R.string.turn_computer);
                     int move = mGame.getComputerMove();
                     setMove(TicTacToeGame.COMPUTER_PLAYER, move);
+                    mInfoTextView.setText(R.string.turn_human);
                     winner = mGame.checkForWinner();
                 }
                 mGame.counter(winner);
-                if (winner == 0)
+                if (winner == 0) {
+                    mGame.turn = TicTacToeGame.HUMAN_PLAYER;
                     mInfoTextView.setText(R.string.turn_human);
-                else if (winner == 1) {
+                }else if (winner == 1) {
                     mInfoTextView.setText(R.string.result_tie);
                     finishedGame();
                     mInfoT.setText("Ties: "+mGame.ties);
@@ -124,10 +145,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     private boolean setMove(char player, int location) {
-
         if (mGame.setMove(player, location)) {
             if(player==TicTacToeGame.HUMAN_PLAYER){
                 mHumanMediaPlayer.start(); // Play the sound effect
+            }else if(player==TicTacToeGame.COMPUTER_PLAYER){
+                mComputerMediaPlayer.start();
             }
             mBoardView.invalidate(); // Redraw the board
             return true;
