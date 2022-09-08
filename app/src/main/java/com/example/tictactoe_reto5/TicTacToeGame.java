@@ -24,8 +24,8 @@ public class TicTacToeGame {
 
     private Random mRand; //dime si alguien tiene dudas de que por aca nos pasamos el juego nanana
 
-    public TicTacToeGame() {
 
+    public TicTacToeGame() {
         // Seed the random number generator
         mRand = new Random();
 
@@ -38,13 +38,13 @@ public class TicTacToeGame {
         androidWins= 0;
     }
 
+
     // Check for a winner.  Return
     //  0 if no winner or tie yet
     //  1 if it's a tie
     //  2 if X won
     //  3 if O won
     public int checkForWinner() {
-
         // Check horizontal wins
         for (int i = 0; i <= 6; i += 3)	{
             if (mBoard[i] == HUMAN_PLAYER &&
@@ -56,7 +56,6 @@ public class TicTacToeGame {
                     mBoard[i+2] == COMPUTER_PLAYER)
                 return 3;
         }
-
         // Check vertical wins
         for (int i = 0; i <= 2; i++) {
             if (mBoard[i] == HUMAN_PLAYER &&
@@ -68,7 +67,6 @@ public class TicTacToeGame {
                     mBoard[i+6]== COMPUTER_PLAYER)
                 return 3;
         }
-
         // Check for diagonal wins
         if ((mBoard[0] == HUMAN_PLAYER &&
                 mBoard[4] == HUMAN_PLAYER &&
@@ -84,14 +82,12 @@ public class TicTacToeGame {
                         mBoard[4] == COMPUTER_PLAYER &&
                         mBoard[6] == COMPUTER_PLAYER))
             return 3;
-
         // Check for tie
         for (int i = 0; i < BOARD_SIZE; i++) {
             // If we find a number, then no one has won yet
             if (mBoard[i] != HUMAN_PLAYER && mBoard[i] != COMPUTER_PLAYER)
                 return 0;
         }
-
         // If we make it through the previous loop, all places are taken, so it's a tie
         return 1;
     }
@@ -117,6 +113,7 @@ public class TicTacToeGame {
         return move;
     }
 
+
     public int getRandomMove(){
         int move;
         do
@@ -127,6 +124,7 @@ public class TicTacToeGame {
         mBoard[move] = COMPUTER_PLAYER;
         return move;
     }
+
 
     public int getWinningMove(){
         for (int i = 0; i < BOARD_SIZE; i++) {
@@ -141,6 +139,7 @@ public class TicTacToeGame {
         }
         return -1;
     }
+
 
     public int getBlockingMove(){
         for (int i = 0; i < BOARD_SIZE; i++) {
@@ -179,6 +178,7 @@ public class TicTacToeGame {
         else return false;
     }
 
+
     public DifficultyLevel getDifficultyLevel() {
         return mDifficultyLevel;
     }
@@ -186,12 +186,14 @@ public class TicTacToeGame {
         mDifficultyLevel = difficultyLevel;
     }
 
+
     public void counter(int playerWin) {
         if(playerWin==1) ties++;
         else if(playerWin==2) humanWins++;
         else if(playerWin==3) androidWins++;
         else return;
     }
+
 
     public char getBoardOccupant(int i){
         return mBoard[i];
